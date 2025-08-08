@@ -1,9 +1,36 @@
-<div *ngIf="!isLoggedIn">
-  <input [(ngModel)]="username" placeholder="Username">
-  <input [(ngModel)]="password" placeholder="Password" type="password">
-  <button (click)="login()">Login</button>
-</div>
+@if(isLoggedIn) {
+<app-layout></app-layout>
+} @else {
+<div class="mt-20 mx-5">
+  <mat-card class="w-full m-auto md:max-w-sm md:min-w-1/2">
+    <mat-card-content>
+      <form #loginForm="ngForm" (ngSubmit)="login()" class="flex flex-col gap-1 items-center mt-5">
+        <h2>Log In</h2>
+         <h3>Welcome to the Task Manager portal</h3>
 
-<div *ngIf="isLoggedIn">
- <app-layout></app-layout>
+        @if(!loginValid) {
+        <mat-error>
+          The username and password were not recognized
+        </mat-error>
+        }
+
+        <mat-form-field class="w-full">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="username" name="username" required>
+          <mat-error>
+            Please provide a valid username
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full">
+        <mat-label>Password</mat-label>
+          <input matInput type="password" [(ngModel)]="password" name="password" required>
+          <mat-error>
+            Please provide a valid password
+          </mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="w-40" [disabled]="!loginForm.form.valid">Login</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>
+}

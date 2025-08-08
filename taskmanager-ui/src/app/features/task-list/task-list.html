@@ -1,13 +1,41 @@
-<h2>Tasks</h2>
-    <mat-list>
-      <mat-list-item *ngFor="let task of tasks">
-        <mat-checkbox [(ngModel)]="task.isCompleted" (change)="updateTask(task)">
-        </mat-checkbox>
-        <span [style.text-decoration]="task.isCompleted ? 'line-through' : 'none'">
-          {{ task.title }}
-        </span>
-        <button mat-icon-button color="warn" (click)="deleteTask(task.id!)">
-          🗑
-        </button>
-      </mat-list-item>
-    </mat-list>
+<mat-card appearance="outlined" class="mt-5 w-full md:max-w-sm md:min-w-3/4">
+    <mat-card-header class="bg-gray-200 h-10">
+    <mat-card-title> Tasks</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+<table mat-table [dataSource]="tasks" class="mat-elevation-z8 items-center">
+  <ng-container matColumnDef="isCompleted">
+    <th mat-header-cell *matHeaderCellDef> Completed </th>
+    <td mat-cell *matCellDef="let element">
+      <mat-checkbox [(ngModel)]="element.isCompleted" (change)="updateTask(element)">
+      </mat-checkbox>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef> Title </th>
+    <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef> Description </th>
+    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>  </th>
+    <td mat-cell *matCellDef="let element">
+      <button matButton="filled" class="!bg-red-500" (click)="deleteTask(element.id!)">
+          <mat-icon>delete</mat-icon>
+    </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row)"></tr>
+</table>
+    </mat-card-content>
+</mat-card>
+
+

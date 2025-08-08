@@ -5,10 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from "@angular/material/card";
 
 @Component({
   selector: 'app-task-form',
- imports: [FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+ imports: [FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule],
   templateUrl: './task-form.html',
   styleUrl: './task-form.scss'
 })

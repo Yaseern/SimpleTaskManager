@@ -1,17 +1,13 @@
-<mat-toolbar> 
-  <span>Task Manager</span>
+<mat-toolbar class="!bg-blue-200 sticky-toolbar"> 
+  <span class="pl-5 md:pl-10">Task Manager</span>
   <span class="flex-1"></span>
-  <button (click)="logOut()" matIconButton class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+  <button (click)="logOut()" matButton="filled" matTooltip="Log out">
     <mat-icon fontIcon="logout">Log Out</mat-icon>
   </button>
 </mat-toolbar>
 
-<mat-card appearance="outlined">
-<mat-card-header>
-    <mat-card-title> Task List</mat-card-title>
-</mat-card-header>
-
+<div class="flex flex-col p-2 mx-5 md:mx-10 mt-2 overflow-auto main-content">
   <app-task-form></app-task-form>
   <app-task-list></app-task-list>
-</mat-card>
+</div>
 

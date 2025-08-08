@@ -8,5 +8,5 @@ export function getSession<T>(key: string): T | null {
 }
 
 export function clearSession() {
-    window.sessionStorage.clear();
+    window.sessionStorage.clear();     
 }

@@ -6,9 +6,12 @@ import { Task } from './task-type';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
-  private baseUrl = 'https://localhost:7178/api/tasks';
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  private readonly baseUrl;
+
+  constructor(private http: HttpClient, private auth: AuthService) {
+    this.baseUrl = `${this.auth.baseDomain}api/tasks`
+  }
 
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({ Authorization: this.auth.getAuthHeader() });

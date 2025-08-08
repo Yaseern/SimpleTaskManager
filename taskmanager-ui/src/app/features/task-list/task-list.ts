@@ -6,15 +6,19 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-task-list',
-    imports: [CommonModule, FormsModule, MatListModule, MatCheckboxModule, MatButtonModule],
+    imports: [CommonModule, FormsModule, MatTableModule, MatCheckboxModule, MatButtonModule, MatIconModule, MatCardModule],
   templateUrl: './task-list.html',
   styleUrl: './task-list.scss'
 })
 export class TaskList {
  tasks: Task[] = [];
+ displayedColumns: string[] = ['isCompleted', 'title', 'description', 'action'];
 
   constructor(private taskService: TaskService) {}
 
@@ -32,5 +36,9 @@ export class TaskList {
 
   deleteTask(id: number) {
     this.taskService.deleteTask(id).subscribe(() => this.loadTasks());
+  }
+
+  onRowClick(data: Task): void {
+
   }
 }

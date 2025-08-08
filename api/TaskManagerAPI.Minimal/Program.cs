@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using TaskManagerAPI.Core.DataAccess;
 using TaskManagerAPI.Core.DataAccess.Entities;
 using TaskManagerAPI.Core.Models.Configuration;
@@ -12,9 +11,22 @@ builder.Services.AddDbContext<TaskDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowedCors",
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:4200")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                      });
+});
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.UseCors("AllowedCors");
+
+app.MapGet("/", () => new { Message = "Welcome to the task manager!"});
 
 var auth = builder.Configuration.GetSection("SimpleAuth").Get<SimpleAuth>()!;
 
