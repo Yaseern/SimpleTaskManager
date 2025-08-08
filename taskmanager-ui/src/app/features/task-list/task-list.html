@@ -1,0 +1,13 @@
+<h2>Tasks</h2>
+    <mat-list>
+      <mat-list-item *ngFor="let task of tasks">
+        <mat-checkbox [(ngModel)]="task.isCompleted" (change)="updateTask(task)">
+        </mat-checkbox>
+        <span [style.text-decoration]="task.isCompleted ? 'line-through' : 'none'">
+          {{ task.title }}
+        </span>
+        <button mat-icon-button color="warn" (click)="deleteTask(task.id!)">
+          🗑
+        </button>
+      </mat-list-item>
+    </mat-list>
