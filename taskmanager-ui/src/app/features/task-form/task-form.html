@@ -3,23 +3,23 @@
     <mat-card-title> {{ (task.id ?? 0) > 0 ? `Edit Task - ${task.title}` : 'Add Task'}}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form #taskForm="ngForm" (ngSubmit)="saveTask()" class="flex flex-col gap-1 items-center mt-5">
+    <form [formGroup]="taskForm" (ngSubmit)="saveTask()" class="flex flex-col gap-1 items-center mt-5">
       <mat-form-field class="w-full">
         <mat-label>Title</mat-label>
-        <input matInput [(ngModel)]="task.title" name="title" required>
+        <input matInput formControlName="title" name="title" required>
         <mat-error>
           Please provide a task title
         </mat-error>
       </mat-form-field>
       <mat-form-field class="w-full">
         <mat-label>Description</mat-label>
-        <textarea matInput [(ngModel)]="task.description" name="description"></textarea>
+        <textarea matInput formControlName="description" name="description"></textarea>
       </mat-form-field>
      <div class="flex flex-wrap gap-1">
         <button mat-raised-button color="secondary" type="button" class="w-30" (click)="resetForm()"
         >Reset</button>
       <button mat-raised-button color="primary" type="submit" class="w-30"
-        [disabled]="!taskForm.form.valid">Save</button>
+        [disabled]="!taskForm.valid">Save</button>
      </div>
     </form>
   </mat-card-content>

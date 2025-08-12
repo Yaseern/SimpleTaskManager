@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Task } from '../task-list/task-type';
 import { TaskService } from '../task-list/task-api';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,15 +11,15 @@ import { SubscriptionAdapter } from '../../shared/subscription-adapter';
 
 @Component({
   selector: 'app-task-form',
-  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule],
   templateUrl: './task-form.html',
   styleUrl: './task-form.scss'
 })
 export class TaskForm extends SubscriptionAdapter implements OnInit {
-  task: Task = this.initialize();
 
-  @ViewChild("taskForm") taskForm?: NgForm = undefined;
-
+  private formBuilder = inject(FormBuilder);
+  taskForm: FormGroup = this.initForm();
+  
   constructor(private taskService: TaskService,
     private taskStoreService: TaskStoreService
   ) {
@@ -30,18 +30,17 @@ export class TaskForm extends SubscriptionAdapter implements OnInit {
     this.subs.add(
       this.taskStoreService.getRowClick()
         .subscribe((task) => {
-          this.task = task;
+          this.taskForm.patchValue(task);
         })
     )
   }
 
-  initialize(): Task {
-    return { id: 0, title: '', description: '', isCompleted: false };
+  initForm(): FormGroup {
+    return this.formBuilder.group<Task>(this.defaultValue);
   }
 
-  resetForm() {   
-    this.task = this.initialize();
-     this.taskForm?.resetForm();
+  resetForm() {
+    this.taskForm.reset(this.defaultValue, { emitEvent: false });
   }
 
   saveTask() {
@@ -65,5 +64,18 @@ export class TaskForm extends SubscriptionAdapter implements OnInit {
   private resetFormAfterSave() {
     this.resetForm();
     this.taskStoreService.triggerRefresh();
+  }
+
+  get task(): Task {
+    return this.taskForm.value
+  }
+
+  get defaultValue(): Task {
+    return {
+      id: 0,
+      title: '',
+      description: '',
+      isCompleted: false
+    }
   }
 }
