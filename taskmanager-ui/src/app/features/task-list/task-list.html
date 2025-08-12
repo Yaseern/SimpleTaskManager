@@ -9,7 +9,7 @@
       <input matInput (keyup)="applyFilter($event)" #input>
     </mat-form-field>
 
-    <table mat-table [dataSource]="tasks" class="mat-elevation-z8 items-center overflow-auto max-h-[320px]" matSort>
+    <table mat-table [dataSource]="tasks" class="mat-elevation-z8 items-center overflow-auto max-h-[320px] max-[600px]:block" matSort>
       <ng-container matColumnDef="isCompleted">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Completed </th>
         <td mat-cell *matCellDef="let element">
