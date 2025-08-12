@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManagerAPI.Core.DataAccess;
+using TaskManagerAPI.Core.Services.Task;
 
 namespace TaskManagerAPI.Minimal.Helpers
 {
     public static class StartupHelper
     {
-        public static void CustomRegister(this WebApplicationBuilder builder)
+        public static void CustomRegister(this WebApplicationBuilder builder, bool isMinimalApi)
         {
             builder.Services.AddDbContext<TaskDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -22,6 +23,17 @@ namespace TaskManagerAPI.Minimal.Helpers
                                             .AllowAnyMethod();
                                   });
             });
+
+            if(!isMinimalApi)
+            {
+                builder.Services.AddControllers();
+                builder.Services.Dependencies();
+            }            
+        }
+
+        public static void Dependencies(this IServiceCollection services)
+        {
+            services.AddScoped<ITaskService, TaskService>();
         }
     }
 }

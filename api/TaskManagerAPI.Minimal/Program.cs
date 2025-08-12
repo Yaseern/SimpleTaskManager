@@ -4,7 +4,8 @@ using static TaskManagerAPI.Core.Extension.BasicAuthExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.CustomRegister();
+var isMinimalAPI = builder.Configuration.GetSection("IsMinimalAPI").Get<bool>();
+builder.CustomRegister(isMinimalAPI);
 
 var app = builder.Build();
 
@@ -16,6 +17,13 @@ var auth = builder.Configuration.GetSection("SimpleAuth").Get<SimpleAuth>()!;
 
 app.UseBasicAuth(auth.Username, auth.Password);
 
-app.CustomMinimalApiRegister();
+if (isMinimalAPI)
+{
+    app.CustomMinimalApiRegister();
+}
+else
+{
+    app.MapControllers();
+}
 
 app.Run();
